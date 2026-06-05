@@ -5,6 +5,7 @@ import { parse } from '../parser';
 import { buildMap } from '../map';
 import { render } from '../renderer';
 import { launchUI } from '../ui';
+import { type ThemeName } from '../themes/visual';
 
 const program = new Command();
 
@@ -13,7 +14,8 @@ program
   .description('Transforms stack traces into navigable Metroid-style ASCII dungeons')
   .version('0.1.0')
   .argument('[file]', 'Stack trace file (omit to read from stdin)')
-  .action(async (file?: string) => {
+  .option('-t, --theme <name>', 'visual theme: dark | retro | neon', 'dark')
+  .action(async (file: string | undefined, options: { theme: string }) => {
     let input: string;
 
     if (file) {
@@ -32,11 +34,15 @@ program
       process.exit(1);
     }
 
+    const themeName = (['dark', 'retro', 'neon'].includes(options.theme)
+      ? options.theme
+      : 'dark') as ThemeName;
+
     try {
       const stack = parse(input);
       const map = buildMap(stack);
       const rooms = render(map);
-      launchUI(map, rooms);
+      launchUI(map, rooms, themeName);
     } catch (err) {
       console.error(`Erro: ${err instanceof Error ? err.message : String(err)}`);
       process.exit(1);

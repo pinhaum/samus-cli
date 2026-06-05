@@ -3,8 +3,10 @@ import * as fs from 'fs';
 import * as tty from 'tty';
 import type { DungeonMap } from '../types';
 import { buildMinimap, buildThreatBar, buildDetailLines } from './helpers';
+import { THEMES, DEFAULT_THEME, type ThemeName } from '../themes/visual';
 
-export function launchUI(map: DungeonMap, roomStrings: string[]): void {
+export function launchUI(map: DungeonMap, roomStrings: string[], themeName: ThemeName = DEFAULT_THEME): void {
+  const theme = THEMES[themeName];
   // When stdin is a pipe (data was read from it), reopen /dev/tty for keyboard input
   let input: NodeJS.ReadableStream = process.stdin;
   if (!process.stdin.isTTY) {
@@ -31,7 +33,7 @@ export function launchUI(map: DungeonMap, roomStrings: string[]): void {
     keys: false, mouse: false,
     border: { type: 'line' },
     label: ' samus-cli ',
-    style: { border: { fg: 'cyan' }, label: { fg: 'cyan', bold: true } },
+    style: { border: { fg: theme.main }, label: { fg: theme.main, bold: true } },
     content: '',
   });
 
@@ -40,7 +42,7 @@ export function launchUI(map: DungeonMap, roomStrings: string[]): void {
     width: MINIMAP_W, height: 'shrink',
     border: { type: 'line' },
     label: ' map ',
-    style: { border: { fg: 'yellow' }, label: { fg: 'yellow' } },
+    style: { border: { fg: theme.minimap }, label: { fg: theme.minimap } },
     content: '',
   });
 
@@ -49,7 +51,7 @@ export function launchUI(map: DungeonMap, roomStrings: string[]): void {
     width: '100%', height: FOOTER_H,
     border: { type: 'line' },
     label: ' threat level ',
-    style: { border: { fg: 'red' }, label: { fg: 'red' } },
+    style: { border: { fg: theme.footer }, label: { fg: theme.footer } },
     content: '',
   });
 
@@ -58,7 +60,7 @@ export function launchUI(map: DungeonMap, roomStrings: string[]): void {
     width: 44, height: 9,
     border: { type: 'line' },
     label: ' room details ',
-    style: { border: { fg: 'green' }, label: { fg: 'green' }, bg: 'black' },
+    style: { border: { fg: theme.detail }, label: { fg: theme.detail }, bg: 'black' },
     hidden: true,
     content: '',
   });
