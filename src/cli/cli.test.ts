@@ -15,6 +15,25 @@ function run(args: string[], input?: string) {
 }
 
 describe('CLI', () => {
+  test('--export markdown imprime markdown no stdout', () => {
+    const result = run(['fixtures/sample.log', '--export', 'markdown']);
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('# Dungeon Map');
+    expect(result.stdout).toContain('Boss Room');
+    expect(result.stdout).toContain('```');
+  });
+
+  test('-e markdown -o arquivo grava arquivo e sai com código 0', () => {
+    const outFile = '/tmp/samus-test-export.md';
+    const result = run(['fixtures/sample.log', '-e', 'markdown', '-o', outFile]);
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Exportado para');
+    const fs = require('fs');
+    expect(fs.existsSync(outFile)).toBe(true);
+    fs.unlinkSync(outFile);
+  });
+
+
   test('arquivo inexistente → exit 1 com mensagem amigável', () => {
     const result = run(['fixtures/nao-existe.log']);
     expect(result.status).toBe(1);

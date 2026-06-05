@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import { readFileSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { parse } from '../parser';
 import { buildMap } from '../map';
 import { render } from '../renderer';
 import { launchUI } from '../ui';
+import { exportMarkdown } from '../exporter';
 import { type ThemeName } from '../themes/visual';
 
 const program = new Command();
@@ -15,7 +17,9 @@ program
   .version('0.1.0')
   .argument('[file]', 'Stack trace file (omit to read from stdin)')
   .option('-t, --theme <name>', 'visual theme: dark | retro | neon', 'dark')
-  .action(async (file: string | undefined, options: { theme: string }) => {
+  .option('-e, --export <format>', 'export format: markdown')
+  .option('-o, --output <file>', 'output file path (default: stdout)')
+  .action(async (file: string | undefined, options: { theme: string; export?: string; output?: string }) => {
     let input: string;
 
     if (file) {
@@ -42,6 +46,18 @@ program
       const stack = parse(input);
       const map = buildMap(stack);
       const rooms = render(map);
+
+      if (options.export === 'markdown') {
+        const md = exportMarkdown(map, rooms);
+        if (options.output) {
+          writeFileSync(options.output, md, 'utf-8');
+          console.log(`Exportado para ${options.output}`);
+        } else {
+          process.stdout.write(md);
+        }
+        return;
+      }
+
       launchUI(map, rooms, themeName);
     } catch (err) {
       console.error(`Erro: ${err instanceof Error ? err.message : String(err)}`);
