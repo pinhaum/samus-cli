@@ -92,7 +92,7 @@ export function launchUI(map: DungeonMap, roomStrings: string[], themeName: Them
 
   // ── navigation ──────────────────────────────────────────────────────────────
   screen.key(['up', 'k'], () => {
-    if (detailBox.hidden === false) return;
+    if (!detailBox.hidden) return;
     if (currentIndex > 0) {
       currentIndex--;
       visited.add(currentIndex);
@@ -101,7 +101,7 @@ export function launchUI(map: DungeonMap, roomStrings: string[], themeName: Them
   });
 
   screen.key(['down', 'j'], () => {
-    if (detailBox.hidden === false) return;
+    if (!detailBox.hidden) return;
     if (currentIndex < map.rooms.length - 1) {
       currentIndex++;
       visited.add(currentIndex);
@@ -110,19 +110,11 @@ export function launchUI(map: DungeonMap, roomStrings: string[], themeName: Them
   });
 
   screen.key(['enter'], () => {
-    if (detailBox.hidden === false) {
-      closeDetail();
-    } else {
-      openDetail();
-    }
+    if (!detailBox.hidden) closeDetail(); else openDetail();
   });
 
   screen.key(['escape', 'q'], () => {
-    if (detailBox.hidden === false) {
-      closeDetail();
-    } else {
-      process.exit(0);
-    }
+    if (!detailBox.hidden) closeDetail(); else process.exit(0);
   });
 
   refresh();

@@ -108,7 +108,7 @@ function renderUnknownRoom(room: DungeonRoom): string {
     top(),
     blank(),
     row('??? Unknown Room ???'),
-    row(`${room.frame.file}:${room.frame.line}`),
+    row(fileRef(room)),
     blank(),
     bottom(),
   ].join('\n');

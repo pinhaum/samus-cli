@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
-import { readFileSync } from 'fs';
-import { writeFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { parse } from '../parser';
 import { buildMap } from '../map';
 import { render } from '../renderer';
 import { launchUI } from '../ui';
 import { exportMarkdown } from '../exporter';
-import { type ThemeName } from '../themes/visual';
+import { THEMES, type ThemeName } from '../themes/visual';
 
 const program = new Command();
 
@@ -38,9 +37,7 @@ program
       process.exit(1);
     }
 
-    const themeName = (['dark', 'retro', 'neon'].includes(options.theme)
-      ? options.theme
-      : 'dark') as ThemeName;
+    const themeName = (options.theme in THEMES ? options.theme : 'dark') as ThemeName;
 
     try {
       const stack = parse(input);

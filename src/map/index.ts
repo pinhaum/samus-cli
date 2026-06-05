@@ -51,7 +51,8 @@ function deterministicLayout(file: string, line: number): RoomLayout {
 
 function detectTreasure(functionName: string, file: string): Treasure | undefined {
   const fn = functionName.toLowerCase();
-  if (fn.includes('cache') || fn.includes('memo')) return { icon: '💎', name: 'Cache Hit' };
+  if (fn.includes('cache')) return { icon: '💎', name: 'Cache Hit' };
+  if (fn.includes('memo')) return { icon: '🗝', name: 'Memoized Function' };
   if (file.endsWith('.test.ts') || file.endsWith('.spec.ts')) return { icon: '⚔', name: 'Test Coverage' };
   if (file.endsWith('.docs.ts') || file.includes('/docs/')) return { icon: '📜', name: 'Documentation Found' };
   return undefined;

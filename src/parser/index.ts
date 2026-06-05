@@ -39,7 +39,7 @@ function parseFrame(line: string): ParsedFrame | null {
       line: lineNum,
       column: col,
       directory: isAnon ? undefined : inferDirectory(location),
-      isAnonymous: true,
+      isAnonymous: isAnon,
     };
   }
 
