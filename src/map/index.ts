@@ -26,7 +26,7 @@ export function buildMap(stack: ParsedStack): DungeonMap {
   const rooms: DungeonRoom[] = reversed.map((frame, i) => {
     const isBossRoom = i === reversed.length - 1;
     const biome = resolveBiome(frame.directory);
-    const layout: RoomLayout = isBossRoom ? 'square' : randomLayout();
+    const layout: RoomLayout = isBossRoom ? 'square' : deterministicLayout(frame.file, frame.line);
     const treasure = isBossRoom || frame.isAnonymous ? undefined : detectTreasure(frame.functionName, frame.file);
 
     return { frame, biome, layout, treasure, isBossRoom };
@@ -40,8 +40,13 @@ function resolveBiome(directory?: string): Biome {
   return BIOME_MAP[directory] ?? 'forest';
 }
 
-function randomLayout(): RoomLayout {
-  return LAYOUTS[Math.floor(Math.random() * LAYOUTS.length)];
+function deterministicLayout(file: string, line: number): RoomLayout {
+  let hash = 0;
+  const key = `${file}:${line}`;
+  for (let i = 0; i < key.length; i++) {
+    hash = ((hash * 31) + key.charCodeAt(i)) >>> 0;
+  }
+  return LAYOUTS[hash % LAYOUTS.length];
 }
 
 function detectTreasure(functionName: string, file: string): Treasure | undefined {

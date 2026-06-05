@@ -1,5 +1,5 @@
 import { buildMap } from './index';
-import type { ParsedStack } from '../types';
+import type { ParsedStack, RoomLayout } from '../types';
 
 const makeStack = (overrides: Partial<ParsedStack> = {}): ParsedStack => ({
   errorType: 'TypeError',
@@ -81,6 +81,30 @@ describe('buildMap', () => {
       map.rooms.slice(0, -1).forEach(room => {
         expect(valid).toContain(room.layout);
       });
+    });
+
+    test('mesmo file:line sempre produz o mesmo layout (determinístico)', () => {
+      const stack = makeStack({
+        frames: [
+          { functionName: 'fn', file: 'fixed.ts', line: 42, directory: 'api', isAnonymous: false },
+          { functionName: 'fn2', file: 'other.ts', line: 1, directory: 'user', isAnonymous: false },
+        ],
+      });
+      const map1 = buildMap(stack);
+      const map2 = buildMap(stack);
+      expect(map1.rooms[0].layout).toBe(map2.rooms[0].layout);
+      expect(map1.rooms[1].layout).toBe(map2.rooms[1].layout);
+    });
+
+    test('file:line diferente produz layout válido', () => {
+      const valid: RoomLayout[] = ['corridor', 'L', 'T', 'square'];
+      const stack = makeStack({
+        frames: [
+          { functionName: 'fn', file: 'a.ts', line: 1, directory: 'api', isAnonymous: false },
+          { functionName: 'fn2', file: 'b.ts', line: 2, directory: 'user', isAnonymous: false },
+        ],
+      });
+      buildMap(stack).rooms.forEach(r => expect(valid).toContain(r.layout));
     });
   });
 
