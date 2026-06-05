@@ -9,7 +9,14 @@
   "scripts": {
     "build": "tsc",
     "dev": "ts-node src/cli/index.ts",
-    "clean": "rm -rf dist"
+    "clean": "rm -rf dist",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": ["**/*.test.ts"]
   },
   "dependencies": {
     "blessed": "^0.1.81",
@@ -17,7 +24,10 @@
   },
   "devDependencies": {
     "@types/blessed": "^0.1.25",
+    "@types/jest": "^30.0.0",
     "@types/node": "^22.0.0",
+    "jest": "^30.4.2",
+    "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.0"
   }
