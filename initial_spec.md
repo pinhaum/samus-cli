@@ -42,13 +42,13 @@ Esta especificação cobre exclusivamente a Fase 1. Features fora deste escopo e
 ### Pipe
 
 ```bash
-cat error.log | metroid-trace
+cat error.log | samus-cli
 ```
 
 ### Arquivo
 
 ```bash
-metroid-trace error.log
+samus-cli error.log
 ```
 
 > Nenhuma outra forma de entrada está no escopo da Fase 1.
@@ -440,7 +440,7 @@ npx ts-node src/renderer/index.ts < fixtures/sample.log
 **Validação manual:**
 
 ```bash
-cat fixtures/sample.log | metroid-trace
+cat fixtures/sample.log | samus-cli
 # Navegar pelo mapa, abrir detalhes, verificar minimap e Threat Level
 ```
 
@@ -458,18 +458,18 @@ cat fixtures/sample.log | metroid-trace
 
 **Critério de conclusão:**
 
-- `cat fixtures/sample.log | metroid-trace` funciona
-- `metroid-trace fixtures/sample.log` funciona
+- `cat fixtures/sample.log | samus-cli` funciona
+- `samus-cli fixtures/sample.log` funciona
 - Arquivo inexistente exibe mensagem amigável e encerra com código 1
 - Input vazio exibe mensagem amigável e encerra com código 1
 
 **Validação manual:**
 
 ```bash
-cat fixtures/sample.log | metroid-trace
-metroid-trace fixtures/sample.log
-metroid-trace fixtures/naoexiste.log
-echo "" | metroid-trace
+cat fixtures/sample.log | samus-cli
+samus-cli fixtures/sample.log
+samus-cli fixtures/naoexiste.log
+echo "" | samus-cli
 ```
 
 ---

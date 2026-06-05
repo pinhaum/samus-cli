@@ -1,0 +1,7 @@
+TypeError: Cannot read properties of undefined (reading 'token')
+    at AuthController.login (/app/src/auth/auth.controller.ts:18:23)
+    at UserService.findUser (/app/src/user/user.service.ts:42:5)
+    at CacheManager.get (/app/src/cache/cache.manager.ts:11:18)
+    at Object.<anonymous> (/app/src/api/routes.ts:7:3)
+    at <anonymous>:1:1
+    at node:internal/modules/cjs/loader:1234:14
