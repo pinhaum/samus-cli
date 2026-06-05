@@ -1,0 +1,9 @@
+StackOverflowError: Maximum call stack size exceeded
+    at TreeNode.traverse (/app/src/utils/tree.ts:15:12)
+    at TreeNode.traverse (/app/src/utils/tree.ts:15:12)
+    at TreeNode.traverse (/app/src/utils/tree.ts:15:12)
+    at TreeNode.traverse (/app/src/utils/tree.ts:15:12)
+    at TreeNode.traverse (/app/src/utils/tree.ts:15:12)
+    at TreeNode.traverse (/app/src/utils/tree.ts:15:12)
+    at TreeNode.process (/app/src/utils/tree.ts:8:5)
+    at App.run (/app/src/api/app.ts:42:3)

@@ -1,0 +1,8 @@
+OutOfMemoryError: JavaScript heap out of memory
+    at AuthService.hashPassword (/app/src/auth/auth.service.ts:44:9)
+    at UserRepository.save (/app/src/user/repository.ts:19:5)
+    at ApiRouter.post (/app/src/api/router.ts:88:12)
+    at DatabaseConnection.query (/app/src/database/connection.ts:31:7)
+    at CacheStore.set (/app/src/cache/store.ts:15:3)
+    at QueueProcessor.enqueue (/app/src/queue/processor.ts:29:6)
+    at PaymentGateway.initiate (/app/src/payments/gateway.ts:77:11)

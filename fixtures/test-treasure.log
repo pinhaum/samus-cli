@@ -1,0 +1,5 @@
+ReferenceError: fetch is not defined
+    at UserService.getProfile (/app/src/user/user.service.ts:33:5)
+    at AuthController.verify (/app/src/auth/auth.test.ts:78:12)
+    at ApiClient.request (/app/src/api/client.spec.ts:45:8)
+    at <anonymous>:1:1

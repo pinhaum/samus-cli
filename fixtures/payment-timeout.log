@@ -1,0 +1,6 @@
+TimeoutError: Database connection timed out after 30000ms
+    at PaymentService.charge (/app/src/payments/payment.service.ts:88:12)
+    at OrderController.checkout (/app/src/api/order.controller.ts:54:18)
+    at DatabasePool.acquire (/app/src/database/pool.ts:23:9)
+    at CacheLayer.get (/app/src/cache/cache.service.ts:11:5)
+    at QueueWorker.process (/app/src/queue/worker.ts:67:3)
