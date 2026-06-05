@@ -60,4 +60,24 @@ describe('parse', () => {
       'Formato de stack trace inválido.'
     );
   });
+
+  test('Object.<anonymous> com arquivo real não recebe isAnonymous', () => {
+    const input = `TypeError: err\n    at Object.<anonymous> (/app/src/api/routes.ts:7:3)`;
+    const result = parse(input);
+    expect(result.frames[0].isAnonymous).toBe(false);
+    expect(result.frames[0].file).toBe('routes.ts');
+    expect(result.frames[0].directory).toBe('api');
+  });
+
+  test('Object.<anonymous> com arquivo real normaliza functionName para "Object"', () => {
+    const input = `TypeError: err\n    at Object.<anonymous> (/app/src/api/routes.ts:7:3)`;
+    const result = parse(input);
+    expect(result.frames[0].functionName).toBe('Object');
+  });
+
+  test('<anonymous> literal sem arquivo continua anônimo', () => {
+    const input = `TypeError: err\n    at <anonymous>:1:1`;
+    const result = parse(input);
+    expect(result.frames[0].isAnonymous).toBe(true);
+  });
 });

@@ -48,14 +48,19 @@ function parseFrame(line: string): ParsedFrame | null {
   const lineNum = parseInt(m[3], 10);
   const col = parseInt(m[4], 10);
 
-  const isAnon =
-    funcName === '<anonymous>' ||
-    funcName.includes('<anonymous>') ||
-    fullPath.startsWith('node:') ||
-    fullPath === '<anonymous>';
+  const pathIsReal = !fullPath.startsWith('node:') && fullPath !== '<anonymous>';
+  const funcIsLiteralAnon = funcName === '<anonymous>';
+  const funcHasAnonSuffix = funcName.includes('<anonymous>') && !funcIsLiteralAnon;
+
+  const isAnon = funcIsLiteralAnon || !pathIsReal;
+
+  // "Object.<anonymous>" with real path → normalize to "Object"
+  const normalizedFunc = (funcHasAnonSuffix && pathIsReal)
+    ? funcName.replace(/\.<anonymous>.*/, '')
+    : funcName;
 
   return {
-    functionName: isAnon ? '<anonymous>' : funcName,
+    functionName: isAnon ? '<anonymous>' : normalizedFunc,
     file: isAnon ? fullPath : extractFile(fullPath),
     line: lineNum,
     column: col,
