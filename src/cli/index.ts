@@ -32,10 +32,15 @@ program
       process.exit(1);
     }
 
-    const stack = parse(input);
-    const map = buildMap(stack);
-    const rooms = render(map);
-    launchUI(map, rooms);
+    try {
+      const stack = parse(input);
+      const map = buildMap(stack);
+      const rooms = render(map);
+      launchUI(map, rooms);
+    } catch (err) {
+      console.error(`Erro: ${err instanceof Error ? err.message : String(err)}`);
+      process.exit(1);
+    }
   });
 
 function readStdin(): Promise<string> {
